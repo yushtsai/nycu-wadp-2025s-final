@@ -7,33 +7,7 @@ import { Crosshair2Icon } from '@radix-ui/react-icons';
 
 import { fetchRealtimeData, requestLocationPermission } from './utils.js';
 
-export const BrandHeader = ({ user, onLoginClick, onLogout }) => {
-    const [realtime_data, setRealTimeData] = useState([]);
-    const [stations, setStations] = useState([]);
-    const [selectedRoute, setSelectedRoute] = useState(localStorage.getItem('selectedRoute') || 'Blue');
-    const [selectedStation, setSelectedStation] = useState(localStorage.getItem('selectedStation') || '忠孝新生');
-    const [location, setlocation] = useState(localStorage.getItem('location') || '')
-    const [panelVisibility, setPanel] = useState([false]);
-    const [countdown, setCountdown] = useState(10);
-    
-    const refreshLocation = () => {
-      requestLocationPermission(handleStationChange, handleRouteChange, setlocation, location);
-    };
-    const handleStationChange = (newValue) => {
-      localStorage.setItem('selectedStation', newValue);
-      setSelectedStation(newValue);
-    };
-  
-    const handleRouteChange = (newValue) => {
-      localStorage.setItem('selectedRoute', newValue);
-      setPanel(true);
-      setSelectedRoute(newValue);
-    };
-  
-    const fetchRealTimeData = () => {
-      fetchRealtimeData(selectedStation, setRealTimeData);
-      setCountdown(10);
-    };
+export const BrandHeader = ({ user, onLoginClick, onLogout, refreshLocation }) => {
 
     return (
     <Flex

@@ -104,9 +104,10 @@ export const requestLocationPermission = (handleStationChange, handleRouteChange
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                setlocation(`${position.coords.latitude},${position.coords.longitude}`);
-                localStorage.setItem('location', `${position.coords.latitude},${position.coords.longitude}`);
-                axios.get(`${api_url}/api/location/${encodeURIComponent(location)}`)
+                const currentLoc = `${position.coords.latitude},${position.coords.longitude}`;
+                setlocation(currentLoc);
+                localStorage.setItem('location', currentLoc);
+                axios.get(`${api_url}/api/location/${encodeURIComponent(currentLoc)}`)
                     .then(response => {
                         handleStationChange(response.data);
                         handleRouteChange(findStationRoute(response.data));

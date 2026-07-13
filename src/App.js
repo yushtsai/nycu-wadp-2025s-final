@@ -14,10 +14,31 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import FavoritePage from './FavoritePage';
 
+import { requestLocationPermission, findStationRoute } from './utils';
+
 function App() {
   const [mode, setMode] = useState(localStorage.getItem('mode') || 'Home');
   const [user, setUser] = useState(null);
   const [page, setPage] = useState('main'); // 'main' | 'login' | 'register'
+
+  // Lifted state
+  const [selectedRoute, setSelectedRoute] = useState(localStorage.getItem('selectedRoute') || 'Blue');
+  const [selectedStation, setSelectedStation] = useState(localStorage.getItem('selectedStation') || '忠孝新生');
+  const [location, setLocation] = useState(localStorage.getItem('location') || '');
+
+  const handleStationChange = (newValue) => {
+    localStorage.setItem('selectedStation', newValue);
+    setSelectedStation(newValue);
+  };
+
+  const handleRouteChange = (newValue) => {
+    localStorage.setItem('selectedRoute', newValue);
+    setSelectedRoute(newValue);
+  };
+
+  const refreshLocation = () => {
+    requestLocationPermission(handleStationChange, handleRouteChange, setLocation, location);
+  };
 
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
@@ -50,7 +71,12 @@ function App() {
         {/* 頁首 */}
         <header>
           <div className="header-inner">
-            <BrandHeader user={user} onLoginClick={() => setPage('login')} onLogout={handleLogout} />
+            <BrandHeader 
+              user={user} 
+              onLoginClick={() => setPage('login')} 
+              onLogout={handleLogout} 
+              refreshLocation={refreshLocation}
+            />
           </div>
         </header>
 
@@ -71,8 +97,32 @@ function App() {
             )}
             {page === 'main' && (
               <>
-                {mode === 'Home' && <Metro />}
-                {mode === 'Bus' && <Bus />}
+                {mode === 'Home' && (
+                  <Metro 
+                    selectedRoute={selectedRoute}
+                    setSelectedRoute={setSelectedRoute}
+                    selectedStation={selectedStation}
+                    setSelectedStation={setSelectedStation}
+                    location={location}
+                    setLocation={setLocation}
+                    handleStationChange={handleStationChange}
+                    handleRouteChange={handleRouteChange}
+                    refreshLocation={refreshLocation}
+                  />
+                )}
+                {mode === 'Bus' && (
+                  <Bus 
+                    selectedRoute={selectedRoute}
+                    setSelectedRoute={setSelectedRoute}
+                    selectedStation={selectedStation}
+                    setSelectedStation={setSelectedStation}
+                    location={location}
+                    setLocation={setLocation}
+                    handleStationChange={handleStationChange}
+                    handleRouteChange={handleRouteChange}
+                    refreshLocation={refreshLocation}
+                  />
+                )}
                 {mode === 'Favorite' && <FavoritePage user={user} />}
               </>
             )}

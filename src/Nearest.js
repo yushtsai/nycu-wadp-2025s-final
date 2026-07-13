@@ -8,13 +8,20 @@ import { fetchRealtimeData, requestLocationPermission } from './utils.js';
 import { BrandHeader } from './Header.js';
 const api_url = "https://peggy-backend-7kg3x2vbyq-de.a.run.app/"
 
-export function Metro() {
+export function Metro({
+  selectedRoute,
+  setSelectedRoute,
+  selectedStation,
+  setSelectedStation,
+  location,
+  setLocation,
+  handleStationChange,
+  handleRouteChange,
+  refreshLocation
+}) {
   const [realtime_data, setRealTimeData] = useState([]);
   const [stations, setStations] = useState([]);
-  const [selectedRoute, setSelectedRoute] = useState(localStorage.getItem('selectedRoute') || 'Blue');
-  const [selectedStation, setSelectedStation] = useState(localStorage.getItem('selectedStation') || '忠孝新生');
-  const [location, setlocation] = useState(localStorage.getItem('location') || '')
-  const [panelVisibility, setPanel] = useState([false]);
+  const [panelVisibility, setPanel] = useState(true);
   const [countdown, setCountdown] = useState(10);
 
   const stationMap = {
@@ -43,20 +50,6 @@ export function Metro() {
 
   }, [selectedRoute, selectedStation]);
 
-
-  const refreshLocation = () => {
-    requestLocationPermission(handleStationChange, handleRouteChange, setlocation, location);
-  };
-  const handleStationChange = (newValue) => {
-    localStorage.setItem('selectedStation', newValue);
-    setSelectedStation(newValue);
-  };
-
-  const handleRouteChange = (newValue) => {
-    localStorage.setItem('selectedRoute', newValue);
-    setPanel(true);
-    setSelectedRoute(newValue);
-  };
 
   const fetchRealTimeData = () => {
     fetchRealtimeData(selectedStation, setRealTimeData);
