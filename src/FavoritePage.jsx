@@ -3,7 +3,7 @@ import { Card, Text, Button, Flex, Select, Dialog, Grid } from '@radix-ui/themes
 import { Plus } from 'lucide-react';
 import { fetchRealtimeData } from './utils';
 
-const API_BASE_URL = 'https://oracle.yupooooo.me'; // ✅ 共用 API 網址變數
+const API_BASE_URL = 'https://oracle.yushtsai.me'; // ✅ 共用 API 網址變數
 
 const FavoritePage = ({ user }) => {
   const [routes, setRoutes] = useState([]);

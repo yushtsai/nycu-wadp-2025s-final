@@ -11,7 +11,7 @@ const RegisterPage = ({ onRegister, goToLogin }) => {
     e.preventDefault();
   
     try {
-      const response = await fetch('https://oracle.yupooooo.me/users', {
+      const response = await fetch('https://oracle.yushtsai.me/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
